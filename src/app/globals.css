@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Clinical Editorial — cream paper, forest-green ink, brass accents. */
+:root {
+  --background: #fbf8f3;
+  --foreground: #1d211c;
+}
+
+@theme {
+  --color-cream: #fbf8f3;
+  --color-paper: #f4efe6;
+  --color-ink-50: #f0f5f1;
+  --color-ink-100: #dce9e0;
+  --color-ink-200: #b9d3c4;
+  --color-ink-400: #5f987f;
+  --color-ink-600: #1f5c46;
+  --color-ink-700: #194d3a;
+  --color-ink-800: #143d2f;
+  --color-ink-900: #102f25;
+  --color-stone-350: #b9ae99;
+  --color-stone-450: #948a76;
+  --color-stone-550: #6f6757;
+  --color-stone-650: #5a5346;
+  --color-stone-750: #463f33;
+  --color-stone-850: #2f2a22;
+  --color-stone-925: #1d211c;
+  --color-brass-100: #efe6d2;
+  --color-brass-500: #a3814a;
+  --color-brass-600: #8a6d3b;
+  --color-brass-700: #6f5730;
+  --color-rust-600: #9a4a2e;
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-fraunces);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+.font-serif {
+  font-family: var(--font-fraunces), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background-color: #1f5c46;
+  color: #fbf8f3;
+}
+
+mark {
+  background: #efe6d2;
+  color: #6f5730;
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
