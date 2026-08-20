@@ -5,8 +5,17 @@ import {
   getUseErrorSignals,
   getYearlyByType,
   USE_ERROR_PATTERNS,
+  type ErrorStage,
 } from "@/lib/openfda";
 import type { ReactNode } from "react";
+
+const STAGE_CHIP: Record<ErrorStage, { label: string; className: string }> = {
+  perception: { label: "Perception", className: "bg-brass-100 text-brass-700" },
+  cognition: { label: "Cognition", className: "bg-ink-50 text-ink-700" },
+  action: { label: "Action", className: "bg-rust-600/10 text-rust-600" },
+  boundary: { label: "Boundary case", className: "border border-stone-350/60 text-stone-550" },
+  attribution: { label: "Reporter-attributed", className: "border border-stone-350/60 text-stone-550" },
+};
 
 export const revalidate = 86400;
 
@@ -141,9 +150,53 @@ export default async function Home() {
               <p className="mt-1 text-xs text-stone-450">
                 reports mentioning &ldquo;{s.phrase}&rdquo;
               </p>
+              <span
+                className={`mt-3 inline-block rounded px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${STAGE_CHIP[s.stage].className}`}
+              >
+                {STAGE_CHIP[s.stage].label}
+              </span>
               <p className="mt-3 text-sm leading-relaxed text-stone-650">{s.why}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Boundary tests */}
+      <section className="mt-16">
+        <h2 className="font-serif text-2xl font-medium text-ink-900">
+          Which analysis owns this cause?
+        </h2>
+        <p className="mb-8 mt-3 max-w-2xl leading-relaxed text-stone-650">
+          A signal only becomes a <em>use-related</em> risk when the initiating
+          event is a human perceiving, deciding, or acting while the device
+          performs to specification. Device deviates from spec → that&apos;s a
+          failure mode for the FMEA family. Two tests sort every narrative:
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="rounded-lg border border-stone-350/40 bg-cream p-6">
+            <p className="font-serif text-lg text-ink-800">
+              1 · The perfect-device test
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-stone-650">
+              Would this scenario still occur with a flawlessly functioning
+              device? <strong className="text-stone-850">Yes</strong> → use-related
+              analysis. <strong className="text-stone-850">No</strong> — it
+              requires a malfunction → failure-mode analysis. A &ldquo;failed to
+              fire&rdquo; narrative can land either way, which is why it&apos;s
+              tagged a boundary case above.
+            </p>
+          </div>
+          <div className="rounded-lg border border-stone-350/40 bg-cream p-6">
+            <p className="font-serif text-lg text-ink-800">
+              2 · The initiating-event test
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-stone-650">
+              When a chain involves both a failure and a user, ask what{" "}
+              <em>starts</em> it. The failure itself belongs to the failure-mode
+              analyses — but the user-response task the failure creates
+              (respond, recover, replace) is use-related risk in its own right.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -190,7 +243,7 @@ export default async function Home() {
         <h2 className="font-serif text-2xl font-medium text-cream">
           Why this matters for HFE teams
         </h2>
-        <div className="mt-6 grid gap-8 sm:grid-cols-3">
+        <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <p className="font-serif text-lg text-brass-100">1 · Signal</p>
             <p className="mt-2 text-sm leading-relaxed text-ink-200">
@@ -211,6 +264,15 @@ export default async function Home() {
             <p className="mt-2 text-sm leading-relaxed text-ink-200">
               Formative scenarios and IFU probes get grounded in documented
               field failures instead of conference-room guesses.
+            </p>
+          </div>
+          <div>
+            <p className="font-serif text-lg text-brass-100">4 · Risk file</p>
+            <p className="mt-2 text-sm leading-relaxed text-ink-200">
+              Confirmed patterns flow into the use-related risk analysis —
+              recalibrating severity and likelihood on existing rows, seeding
+              new ones, and tracing each use-error chain to the hazards the
+              top-level risk file owns.
             </p>
           </div>
         </div>

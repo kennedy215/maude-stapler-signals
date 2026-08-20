@@ -97,19 +97,32 @@ export async function getTotals(): Promise<Totals> {
  * keyword heuristic for surfacing candidates to read — not a validated
  * classifier. See the Limitations section.
  */
-export const USE_ERROR_PATTERNS: { phrase: string; label: string; why: string }[] = [
-  { phrase: "failed to fire", label: "Failed to fire", why: "Often entangled with loading, positioning, or tissue-thickness selection" },
-  { phrase: "misfire", label: "Misfire", why: "Frequently involves firing sequence or reload handling" },
-  { phrase: "wrong size", label: "Wrong size", why: "Cartridge/tissue mismatch is a classic perception-stage use error" },
-  { phrase: "inadvertently", label: "Inadvertent action", why: "Marker for unintended activation or release — action-stage errors" },
-  { phrase: "user error", label: "Labeled 'user error'", why: "How reporters themselves attribute the event" },
-  { phrase: "difficult to remove", label: "Difficult to remove", why: "Post-fire release problems often involve technique interaction" },
+export type ErrorStage =
+  | "perception"
+  | "cognition"
+  | "action"
+  | "boundary"
+  | "attribution";
+
+export const USE_ERROR_PATTERNS: {
+  phrase: string;
+  label: string;
+  why: string;
+  stage: ErrorStage;
+}[] = [
+  { phrase: "failed to fire", label: "Failed to fire", why: "Often entangled with loading, positioning, or tissue-thickness selection — but a jammed mechanism with perfect technique is a device failure. Run the perfect-device test before claiming it.", stage: "boundary" },
+  { phrase: "misfire", label: "Misfire", why: "Frequently involves firing sequence or reload handling — execution of a known procedure", stage: "action" },
+  { phrase: "wrong size", label: "Wrong size", why: "Cartridge/tissue mismatch — the user didn't detect or judge the tissue thickness the design asked them to assess", stage: "perception" },
+  { phrase: "inadvertently", label: "Inadvertent action", why: "Marker for unintended activation or release — classic slip during execution", stage: "action" },
+  { phrase: "user error", label: "Labeled 'user error'", why: "How reporters themselves attribute the event — attribution, not analysis; treat as a pointer, not a classification", stage: "attribution" },
+  { phrase: "difficult to remove", label: "Difficult to remove", why: "Post-fire release problems often involve technique interaction with the release design", stage: "action" },
 ];
 
 export interface KeywordSignal {
   label: string;
   phrase: string;
   why: string;
+  stage: ErrorStage;
   total: number;
 }
 
