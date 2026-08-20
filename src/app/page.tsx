@@ -20,7 +20,6 @@ const STAGE_CHIP: Record<ErrorStage, { label: string; className: string }> = {
 export const revalidate = 86400;
 
 const PORTFOLIO = "https://www.kennedydesousa.com";
-const REPO = "https://github.com/kennedy215/maude-stapler-signals";
 
 function highlight(text: string): ReactNode[] {
   const phrases = USE_ERROR_PATTERNS.map((p) => p.phrase);
@@ -321,11 +320,7 @@ export default async function Home() {
             Kennedy DeSousa
           </a>{" "}
           — Human Factors Engineer. Independent project on public data;
-          not affiliated with FDA or any device manufacturer.{" "}
-          <a href={REPO} className="text-ink-600 underline underline-offset-2">
-            Source on GitHub
-          </a>
-          .
+          not affiliated with FDA or any device manufacturer.
         </p>
         <p className="mt-3 text-xs text-stone-450">
           Data: FDA openFDA device/event API. Per openFDA terms: do not rely on
